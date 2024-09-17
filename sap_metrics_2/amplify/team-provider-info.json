@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-sapmetrics2-dev-04b11-authRole",
+      "UnauthRoleArn": "arn:aws:iam::149536492076:role/amplify-sapmetrics2-dev-04b11-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::149536492076:role/amplify-sapmetrics2-dev-04b11-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-sapmetrics2-dev-04b11-deployment",
+      "UnauthRoleName": "amplify-sapmetrics2-dev-04b11-unauthRole",
+      "StackName": "amplify-sapmetrics2-dev-04b11",
+      "StackId": "arn:aws:cloudformation:ap-south-1:149536492076:stack/amplify-sapmetrics2-dev-04b11/1c717270-7538-11ef-a20f-0ab2a1a612c5",
+      "AmplifyAppId": "dpjd6yt1zwe1c"
+    },
+    "categories": {
+      "hosting": {
+        "S3AndCloudFront": {}
+      },
+      "auth": {
+        "sapmetrics203b48fd9": {}
+      },
+      "api": {
+        "sapmetrics2": {}
+      }
+    }
+  }
+}

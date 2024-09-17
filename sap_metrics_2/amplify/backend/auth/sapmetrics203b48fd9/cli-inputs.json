@@ -1,0 +1,49 @@
+{
+  "version": "1",
+  "cognitoConfig": {
+    "identityPoolName": "sapmetrics203b48fd9_identitypool_03b48fd9",
+    "allowUnauthenticatedIdentities": false,
+    "resourceNameTruncated": "sapmet03b48fd9",
+    "userPoolName": "sapmetrics203b48fd9_userpool_03b48fd9",
+    "autoVerifiedAttributes": [
+      "email"
+    ],
+    "mfaConfiguration": "OFF",
+    "mfaTypes": [
+      "SMS Text Message"
+    ],
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
+    "defaultPasswordPolicy": false,
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [],
+    "requiredAttributes": [
+      "email"
+    ],
+    "aliasAttributes": [],
+    "userpoolClientGenerateSecret": false,
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientWriteAttributes": [
+      "email"
+    ],
+    "userpoolClientReadAttributes": [
+      "email"
+    ],
+    "userpoolClientLambdaRole": "sapmet03b48fd9_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": false,
+    "sharedId": "03b48fd9",
+    "resourceName": "sapmetrics203b48fd9",
+    "authSelections": "identityPoolAndUserPool",
+    "useDefault": "default",
+    "usernameAttributes": [
+      "email"
+    ],
+    "triggers": {},
+    "userPoolGroupList": [],
+    "serviceName": "Cognito",
+    "usernameCaseSensitive": false,
+    "useEnabledMfas": true
+  }
+}
