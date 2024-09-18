@@ -6,6 +6,7 @@ import Snapshot from './components/Snapshot/Snapshot';
 import Users from './components/Users/Users'; 
 import Overview from './components/Overview/Overview'; 
 import Trends from './components/Trends/Trends';
+import Test from './components/Test/Test';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/users" element={<Users/>} />
             <Route path="/overview" element={<Overview/>} />
             <Route path="/trends" element={<Trends/>} />
+            <Route path="/test" element={<Test/>} />
           </Routes>
         </div>
       </div>

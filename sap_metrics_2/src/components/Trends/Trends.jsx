@@ -17,7 +17,7 @@ const Trends = () => {
 
     const [sortedSMLG1, setSortedSMLG1] = useState([]);
     const [sortedSMLG2, setSortedSMLG2] = useState([]);
-    // Refs for parent containers and for fetching data
+
     const parentRefs = useRef([]); 
 
     // Utility function to format and sort the fetched data
