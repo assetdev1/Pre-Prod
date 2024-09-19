@@ -213,6 +213,7 @@ const Trends = () => {
         <h1>Trend Page</h1>
         <h4>Version 1.0.0</h4>     
         {/* <Link to="/">Go Back</Link>  */}
+        <div><h1>text</h1></div>
         {trendsData.map((card, id)=> {
           return(
               <div key={id} className="parentContainer" ref={el => parentRefs.current[id] = el}>

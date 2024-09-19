@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './Sidebar.css'
 import Logo from '../../imgs/logo.png'
 import PwcLogo from '../../imgs/pwc_logo.png'
+import Nav from 'react-bootstrap/Nav'
 
 // import {UilEstate} from "@iconscout/react-unicons"; //Since added sep in Data.js
 import { SidebarData } from '../../Data/Data';
@@ -10,7 +11,7 @@ import { motion } from 'framer-motion';
 
 import { Link } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = (props) => {
     const [selected, setSelected] = useState(0)
     const [expanded, setExpanded] = useState(true)
 
@@ -21,6 +22,10 @@ const Sidebar = () => {
         false:{
             left: '-60%'
         }
+    }
+
+    const handleLogout = () => {
+        props.logOut();
     }
 
   return (
@@ -55,7 +60,7 @@ const Sidebar = () => {
                 })}
 
                 <div className='menuItem'>
-                    <UilSignOutAlt/>
+                    <Nav.Link onClick={ handleLogout }><UilSignOutAlt/></Nav.Link>
                 </div>
             </div> 
         </motion.div>
