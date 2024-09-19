@@ -199,6 +199,9 @@ type HEALTH @model {
   TR_COUNT_SUCCESS: String
   TR_COUNT_WARNING: String
   TR_COUNT_ERROR: String
+  SAP_SPOOL_FREE: String
+  SAP_SPOOL_TOTAL: String
+  SAP_SPOOL_USAGE: String
 }
 
 

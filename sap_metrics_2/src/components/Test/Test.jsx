@@ -15,7 +15,7 @@ const client = generateClient();
 
 const ListHealth = `
   query {
-    listHEALTH {
+    listHEALTH(filter: {id: {between: ["22/08/2024", "25/08/2024"]}}, limit: 25) {
       items {
         SAP_BACKGROUND_FREE
         SAP_BACKGROUND_TOTAL
@@ -23,7 +23,24 @@ const ListHealth = `
         SAP_DIALOG_FREE
         SAP_DIALOG_TOTAL
         SAP_DIALOG_USAGE
-        SAP_DIALOG_USER
+        SAP_UPDATE_FREE
+        SAP_UPDATE_TOTAL
+        SAP_UPDATE_USAGE
+        SAP_SPOOL_FREE
+        SAP_SPOOL_TOTAL
+        SAP_SPOOL_USAGE
+      }
+    }
+  }
+`
+
+const ListTodo = `
+  query {
+    listTodos(filter: {description: {between: ["21/08/2024", "27/08/2024"]}}, limit: 25) {
+      items {
+        description
+        id
+        name
       }
     }
   }
@@ -74,7 +91,8 @@ const Test = () => {
 
   async function fetchTodos() {
     const result = await client.graphql({
-      query: listTodos,
+      // query: listTodos,
+      query: ListTodo,
     });
     // console.log(result.data.listTodos.items)
     // sorted items return as per description
