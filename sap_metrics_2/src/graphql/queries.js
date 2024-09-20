@@ -555,6 +555,9 @@ export const getHEALTH = /* GraphQL */ `
       TR_COUNT_SUCCESS
       TR_COUNT_WARNING
       TR_COUNT_ERROR
+      SAP_SPOOL_FREE
+      SAP_SPOOL_TOTAL
+      SAP_SPOOL_USAGE
       createdAt
       updatedAt
       __typename
@@ -630,6 +633,9 @@ export const listHEALTH = /* GraphQL */ `
         TR_COUNT_SUCCESS
         TR_COUNT_WARNING
         TR_COUNT_ERROR
+        SAP_SPOOL_FREE
+        SAP_SPOOL_TOTAL
+        SAP_SPOOL_USAGE
         createdAt
         updatedAt
         __typename
@@ -1036,6 +1042,9 @@ export const healthByTime = /* GraphQL */ `
         TR_COUNT_SUCCESS
         TR_COUNT_WARNING
         TR_COUNT_ERROR
+        SAP_SPOOL_FREE
+        SAP_SPOOL_TOTAL
+        SAP_SPOOL_USAGE
         createdAt
         updatedAt
         __typename

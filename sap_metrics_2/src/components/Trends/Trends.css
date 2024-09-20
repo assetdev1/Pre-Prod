@@ -109,6 +109,47 @@
     background-color: #0056b3;
 }
 
+/* The circle for percentage */
+.circle-container-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 20px;
+}
+
+.circle-container {
+  background-color: rgba(255, 255, 255, 0.529);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  height: auto;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.circle-container:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.circle-container h3 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #444;
+}
+
+.usage-info {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #666;
+}
+
+.usage-info span {
+  font-weight: 500;
+}
+
 @media screen and (max-width: 1200px) {
     .TrendDash{
         padding-top: 2rem;
@@ -118,6 +159,11 @@
     }
     .parentContainer{
         height: 9rem;
+    }
+
+    .circle-container {
+      width: 250px;
+      height: auto;
     }
 }
 
@@ -129,4 +175,26 @@
     .right-content{
         padding-top: 0rem;
     }
+
+    .circle-container {
+      width: 200px;
+      height: auto;
+    }
+}
+
+.CircularProgressbar-text {
+  fill: #444;
+  font-size: 1.5rem;
+}
+
+.CircularProgressbar-path {
+  stroke-linecap: round;
+}
+
+.CircularProgressbar-trail {
+  stroke: #3320e1;
+}
+
+.CircularProgressbar-background {
+  fill: #f3f3f3;
 }

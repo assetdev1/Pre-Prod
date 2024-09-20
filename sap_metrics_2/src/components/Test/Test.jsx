@@ -15,7 +15,7 @@ const client = generateClient();
 
 const ListHealth = `
   query {
-    listHEALTH(filter: {id: {between: ["22/08/2024", "25/08/2024"]}}, limit: 25) {
+    listHEALTH(limit: 25) {
       items {
         SAP_BACKGROUND_FREE
         SAP_BACKGROUND_TOTAL
@@ -23,12 +23,12 @@ const ListHealth = `
         SAP_DIALOG_FREE
         SAP_DIALOG_TOTAL
         SAP_DIALOG_USAGE
-        SAP_UPDATE_FREE
-        SAP_UPDATE_TOTAL
-        SAP_UPDATE_USAGE
         SAP_SPOOL_FREE
         SAP_SPOOL_TOTAL
         SAP_SPOOL_USAGE
+        SAP_UPDATE_FREE
+        SAP_UPDATE_TOTAL
+        SAP_UPDATE_USAGE
       }
     }
   }
@@ -56,10 +56,11 @@ const Test = () => {
   // const dialog = health.map(health => health.SAP_DIALOG_FREE)
 
   async function fetchHealth() {
-     const result = await client.graphql({
+      const result = await client.graphql({
       query: ListHealth,
     })
-    console.log(result.data.listHEALTH.items)
+    console.log(result.data.listHEALTH.items[0].SAP_DIALOG_FREE)
+    console.log(result.data.listHEALTH)
     setHealth(result.data.listHEALTH.items)
   }
 
