@@ -1,31 +1,34 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import { Link } from "react-router-dom";
 import './Trends.css';
 // import { trendsData } from '../../Data/Data';
 import Box from '../Box/Box';
 import { UilClipboardAlt } from "@iconscout/react-unicons";
-import { listSMlGS } from 'D:/SAP_METRICS/new_sap_metrics/src/graphql/queries';
 import { Amplify } from 'aws-amplify';
-import awsExports from 'D:/SAP_METRICS/new_sap_metrics/src/aws-exports';
+import awsExports from '../../aws-exports';
 import { generateClient } from 'aws-amplify/api';
 import dayjs from 'dayjs';
+// import { listSMlGS } from '../../graphql/queries';
+import { ListHealth, ListSmlg } from '../../graphql/manipulated_queries';
+
 
 Amplify.configure(awsExports);
 const client = generateClient();
 
 const Trends = () => {
 
+    //////////////////////////////SMLG////////////////////////////////////////////
     const [sortedSMLG1, setSortedSMLG1] = useState([]);
     const [sortedSMLG2, setSortedSMLG2] = useState([]);
-    // Refs for parent containers and for fetching data
-    const parentRefs = useRef([]); 
 
     // Utility function to format and sort the fetched data
     const processSMLGData = (data) => {
-      return data.items.sort((a, b) => {
-        const timeA = new Date(a.TIME.slice(0, 10) + ' ' + a.TIME.slice(10));
-        const timeB = new Date(b.TIME.slice(0, 10) + ' ' + b.TIME.slice(10));
-        return timeA - timeB;
+      return data.items.sort((a, b) => a.TIME.localeCompare(b.TIME)).map(item => {
+        return { 
+          sap_response_time: item.SAP_RESPONSE_TIME, time: item.TIME
+        }
       });
     };
 
@@ -35,14 +38,17 @@ const Trends = () => {
       try {
         // Fetch both datasets simultaneously
         const [result1, result2] = await Promise.all([
-          client.graphql({ query: listSMlGS }),
-          client.graphql({ query: listSMlGS }),
+          client.graphql({ query: ListSmlg }),
+          client.graphql({ query: ListSmlg }),
         ]);
 
-        setSortedSMLG1(result1.data.listSMlGS.items);
-        console.log(result1.data.listSMlGS.items)
-        setSortedSMLG2(result2.data.listSMlGS.items);
-        console.log(result2.data.listSMlGS.items)
+        const sorted_result1 = processSMLGData(result1.data.listSMlGS);
+        const sorted_result2 = processSMLGData(result2.data.listSMlGS);
+
+        setSortedSMLG1(sorted_result1);
+        console.log(sorted_result1)
+        setSortedSMLG2(sorted_result2);
+        console.log(sorted_result2)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -50,8 +56,22 @@ const Trends = () => {
     fetchData(); // Trigger data fetch on component mount
     }, []); // Empty dependency array ensures this runs once when the component mounts
 
-    // Utility function to format dates
-    const formatDate = (str) => new Date(str.slice(0, 10) + ' ' + str.slice(10));
+    // // Utility function to format dates
+    // const formatDate = (str) => new Date(str.slice(0, 10) + ' ' + str.slice(10));
+    // Function to format the date in ISO format
+    const formatDate = (str) => new Date(str).toISOString();
+
+    const data_2 = sortedSMLG1.map((item) => {
+      const x = formatDate(item.time);
+      const y = Number(item.sap_response_time);
+      
+      // Print each mapping result
+      console.log(`xx: ${x}, yy: ${y}`);
+    
+      // return { x, y };
+    });
+
+    // console.log(data_2)
 
     // Trends Data
     const trendsData = [
@@ -68,8 +88,8 @@ const Trends = () => {
           {
             name: 'Review',
             data: sortedSMLG1.map((item) => ({
-              x: formatDate(item.TIME),
-              y: Number(item.SAP_RESPONSE_TIME),
+              x: formatDate(item.time),
+              y: Number(item.sap_response_time),
             })),
           },
         ],
@@ -87,8 +107,8 @@ const Trends = () => {
           {
             name: 'Review_2',
             data: sortedSMLG2.map((item) => ({
-              x: formatDate(item.TIME),
-              y: Number(item.SAP_RESPONSE_TIME),
+              x: formatDate(item.time),
+              y: Number(item.sap_response_time),
             })),
           },
         ],
@@ -159,7 +179,10 @@ const Trends = () => {
         ],
       },
     ];
+    //////////////////////////////////////////////////////////////////////////////
 
+    ////////////////////////////////Logic for auto scroll///////////////////////////////////////
+    const parentRefs = useRef([]); 
     // State for Dropdown
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
@@ -203,13 +226,112 @@ const Trends = () => {
       setStartDate('');
       setEndDate('');
     };
+    ////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////Health//////////////////////////////////////
+    const [data, setData] = useState({
+      dialog: { total: 100, free: 50, usage: 0 },
+      background: { total: 200, free: 100, usage: 0 },
+      spool: { total: 300, free: 150, usage: 0 },
+      update: { total: 400, free: 200, usage: 0 }
+    }); // default values for demo
+    const [hoverIndex, setHoverIndex] = useState(null);
+
+    const [health, setHealth] = useState([]);
+
+    // Fetch data from DynamoDB via GraphQL
+    useEffect(() => {
+      async function fetchHealth() {
+        try {
+          const result = await client.graphql({
+            query: ListHealth,
+          })
+          console.log(result.data.listHEALTH.items)
+          // setHealth(result.data.listHEALTH.items)
+          const dialog_total = Number(result.data.listHEALTH.items[0].SAP_DIALOG_TOTAL);
+          const dialog_free = Number(result.data.listHEALTH.items[0].SAP_DIALOG_FREE);
+          const dialog_usage = Number(result.data.listHEALTH.items[0].SAP_DIALOG_USAGE);
+          
+          const background_total = Number(result.data.listHEALTH.items[0].SAP_BACKGROUND_TOTAL);
+          const background_free = Number(result.data.listHEALTH.items[0].SAP_BACKGROUND_FREE);
+          const background_usage = Number(result.data.listHEALTH.items[0].SAP_BACKGROUND_USAGE);
+          
+          const spool_total = Number(result.data.listHEALTH.items[0].SAP_SPOOL_TOTAL);
+          const spool_free = Number(result.data.listHEALTH.items[0].SAP_SPOOL_FREE);
+          const spool_usage = Number(result.data.listHEALTH.items[0].SAP_SPOOL_USAGE);
+          
+          const update_total = Number(result.data.listHEALTH.items[0].SAP_UPDATE_TOTAL);
+          const update_free = Number(result.data.listHEALTH.items[0].SAP_UPDATE_FREE);
+          const update_usage = Number(result.data.listHEALTH.items[0].SAP_UPDATE_USAGE);
+          setData({ 
+            dialog: { total: dialog_total, free: dialog_free, usage: dialog_usage },
+            background: { total: background_total, free: background_free, usage: background_usage },
+            spool: { total: spool_total, free: spool_free, usage: spool_usage },
+            update: { total: update_total, free: update_free, usage: update_usage }
+           });
+        } catch (error) {
+          console.error('Error fetching space data:', error);
+        }
+      };
+      
+      fetchHealth();
+    }, []);
+
+    // Function to calculate percentage occupied and usage
+    const calculateOccupiedPercentage = (total, free) => ((total - free) / total) * 100;
+    // const calculateUsage = (total, free) => total - free;
+
+    // Array for rendering multiple categories dynamically with shades of blue
+    const categories = ['dialog', 'background', 'spool', 'update'];
+    const colors = {
+      dialog: '#4A90E2',    // Light blue for dialog
+      background: '#007AFF', // Classic blue for background
+      spool: '#005EB8',     // Darker blue for spool
+      update: '#003366'     // Dark navy blue for update
+    };
+    ////////////////////////////////////////////////////////////////////////////
 
   return (
     <>
       <div className='TrendDash'>
-        <h1>Trend Page</h1>
+        <h1>Trending Page</h1>
         <h4>Version 1.0.0</h4>     
         {/* <Link to="/">Go Back</Link>  */}
+        <h2>Work Process Utilizations</h2>
+        <div className="circle-container-wrapper">
+          {categories.map((category, index) => {
+            const total = data[category].total;
+            const free = data[category].free;
+            const occupiedPercentage = calculateOccupiedPercentage(total, free);
+            const usage = data[category].usage;
+            // const usage = calculateUsage(total, free);
+            return (
+              <div
+                key={category}
+                className="circle-container"
+                onMouseEnter={() => setHoverIndex(index)}
+                onMouseLeave={() => setHoverIndex(null)}
+              >
+                <h3>{category.toUpperCase()}</h3>
+                <CircularProgressbar
+                  value={occupiedPercentage}
+                  text={hoverIndex === index ? `Free: ${free}` : `${Math.round(occupiedPercentage)}% Occupied`}
+                  styles={buildStyles({
+                    textSize: '16px',
+                    pathColor: colors[category],
+                    textColor: '#333',
+                    trailColor: '#d6d6d6',
+                    backgroundColor: '#f3f3f3',
+                  })}
+                />
+                <div className="usage-info">
+                  <span>Usage: {usage} </span>
+                </div>
+              </div>
+            );
+          })}
+      </div>
+
         {trendsData.map((card, id)=> {
           return(
               <div key={id} className="parentContainer" ref={el => parentRefs.current[id] = el}>
