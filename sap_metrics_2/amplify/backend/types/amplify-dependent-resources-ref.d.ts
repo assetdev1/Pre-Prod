@@ -2,12 +2,11 @@ export type AmplifyDependentResourcesAttributes = {
   "api": {
     "sapmetrics2": {
       "GraphQLAPIEndpointOutput": "string",
-      "GraphQLAPIIdOutput": "string",
-      "GraphQLAPIKeyOutput": "string"
+      "GraphQLAPIIdOutput": "string"
     }
   },
   "auth": {
-    "sapmetrics203b48fd9": {
+    "sapmetrics207c3368a07c3368a": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -15,6 +14,9 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolArn": "string",
       "UserPoolId": "string",
       "UserPoolName": "string"
+    },
+    "userPoolGroups": {
+      "adminGroupRole": "string"
     }
   },
   "hosting": {

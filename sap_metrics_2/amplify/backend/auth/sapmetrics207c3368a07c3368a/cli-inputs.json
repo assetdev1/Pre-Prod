@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "sapmetrics203b48fd9_identitypool_03b48fd9",
-    "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "sapmet03b48fd9",
-    "userPoolName": "sapmetrics203b48fd9_userpool_03b48fd9",
+    "identityPoolName": "sapmetrics207c3368a_identitypool_07c3368a",
+    "allowUnauthenticatedIdentities": true,
+    "resourceNameTruncated": "sapmet07c3368a",
+    "userPoolName": "sapmetrics207c3368a_userpool_07c3368a",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,17 +31,20 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "sapmet03b48fd9_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "sapmet07c3368a_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "03b48fd9",
-    "resourceName": "sapmetrics203b48fd9",
+    "sharedId": "07c3368a",
+    "resourceName": "sapmetrics207c3368a07c3368a",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "default",
-    "usernameAttributes": [
-      "email"
-    ],
+    "useDefault": "manual",
+    "thirdPartyAuth": false,
+    "userPoolGroups": true,
+    "adminQueries": false,
     "triggers": {},
-    "userPoolGroupList": [],
+    "hostedUI": false,
+    "userPoolGroupList": [
+      "admin"
+    ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
     "useEnabledMfas": true

@@ -10,32 +10,12 @@ import { Amplify } from 'aws-amplify';
 import awsExports from '../../aws-exports';
 import { generateClient } from 'aws-amplify/api';
 import dayjs from 'dayjs';
-import { listTodos, listHEALTH, listSMlGS } from '../../graphql/queries';
+// import { listSMlGS } from '../../graphql/queries';
+import { ListHealth, ListSmlg } from '../../graphql/manipulated_queries';
 
 
 Amplify.configure(awsExports);
 const client = generateClient();
-
-const ListHealth = `
-  query {
-    listHEALTH(limit: 25) {
-      items {
-        SAP_BACKGROUND_FREE
-        SAP_BACKGROUND_TOTAL
-        SAP_BACKGROUND_USAGE
-        SAP_DIALOG_FREE
-        SAP_DIALOG_TOTAL
-        SAP_DIALOG_USAGE
-        SAP_SPOOL_FREE
-        SAP_SPOOL_TOTAL
-        SAP_SPOOL_USAGE
-        SAP_UPDATE_FREE
-        SAP_UPDATE_TOTAL
-        SAP_UPDATE_USAGE
-      }
-    }
-  }
-`
 
 const Trends = () => {
 
@@ -45,10 +25,10 @@ const Trends = () => {
 
     // Utility function to format and sort the fetched data
     const processSMLGData = (data) => {
-      return data.items.sort((a, b) => {
-        const timeA = new Date(a.TIME.slice(0, 10) + ' ' + a.TIME.slice(10));
-        const timeB = new Date(b.TIME.slice(0, 10) + ' ' + b.TIME.slice(10));
-        return timeA - timeB;
+      return data.items.sort((a, b) => a.TIME.localeCompare(b.TIME)).map(item => {
+        return { 
+          sap_response_time: item.SAP_RESPONSE_TIME, time: item.TIME
+        }
       });
     };
 
@@ -58,8 +38,8 @@ const Trends = () => {
       try {
         // Fetch both datasets simultaneously
         const [result1, result2] = await Promise.all([
-          client.graphql({ query: listSMlGS }),
-          client.graphql({ query: listSMlGS }),
+          client.graphql({ query: ListSmlg }),
+          client.graphql({ query: ListSmlg }),
         ]);
 
         const sorted_result1 = processSMLGData(result1.data.listSMlGS);
@@ -76,8 +56,22 @@ const Trends = () => {
     fetchData(); // Trigger data fetch on component mount
     }, []); // Empty dependency array ensures this runs once when the component mounts
 
-    // Utility function to format dates
-    const formatDate = (str) => new Date(str.slice(0, 10) + ' ' + str.slice(10));
+    // // Utility function to format dates
+    // const formatDate = (str) => new Date(str.slice(0, 10) + ' ' + str.slice(10));
+    // Function to format the date in ISO format
+    const formatDate = (str) => new Date(str).toISOString();
+
+    const data_2 = sortedSMLG1.map((item) => {
+      const x = formatDate(item.time);
+      const y = Number(item.sap_response_time);
+      
+      // Print each mapping result
+      console.log(`xx: ${x}, yy: ${y}`);
+    
+      // return { x, y };
+    });
+
+    // console.log(data_2)
 
     // Trends Data
     const trendsData = [
@@ -94,8 +88,8 @@ const Trends = () => {
           {
             name: 'Review',
             data: sortedSMLG1.map((item) => ({
-              x: formatDate(item.TIME),
-              y: Number(item.SAP_RESPONSE_TIME),
+              x: formatDate(item.time),
+              y: Number(item.sap_response_time),
             })),
           },
         ],
@@ -113,8 +107,8 @@ const Trends = () => {
           {
             name: 'Review_2',
             data: sortedSMLG2.map((item) => ({
-              x: formatDate(item.TIME),
-              y: Number(item.SAP_RESPONSE_TIME),
+              x: formatDate(item.time),
+              y: Number(item.sap_response_time),
             })),
           },
         ],
@@ -300,7 +294,7 @@ const Trends = () => {
   return (
     <>
       <div className='TrendDash'>
-        <h1>Trend Page</h1>
+        <h1>Trending Page</h1>
         <h4>Version 1.0.0</h4>     
         {/* <Link to="/">Go Back</Link>  */}
         <h2>Work Process Utilizations</h2>

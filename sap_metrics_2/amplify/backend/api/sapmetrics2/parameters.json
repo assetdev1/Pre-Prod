@@ -1,6 +1,5 @@
 {
   "AppSyncApiName": "sapmetrics2",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
-  "DynamoDBEnableServerSideEncryption": false,
-  "AuthModeLastUpdated": "2024-09-17T22:01:38.766Z"
+  "DynamoDBEnableServerSideEncryption": false
 }

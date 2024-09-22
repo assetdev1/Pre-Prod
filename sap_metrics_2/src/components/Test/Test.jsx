@@ -7,44 +7,11 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import awsExports from '../../aws-exports';
 
 import { generateClient } from 'aws-amplify/api';
-import { createTodo, updateTodo } from '../../graphql/mutations';
-import { listTodos, getTodo, listHEALTH, getHEALTH } from '../../graphql/queries';
+import { getTodo } from '../../graphql/queries';
+import { ListTodo, ListHealth, ListSmlg } from '../../graphql/manipulated_queries';
 
 Amplify.configure(awsExports);
 const client = generateClient();
-
-const ListHealth = `
-  query {
-    listHEALTH(limit: 25) {
-      items {
-        SAP_BACKGROUND_FREE
-        SAP_BACKGROUND_TOTAL
-        SAP_BACKGROUND_USAGE
-        SAP_DIALOG_FREE
-        SAP_DIALOG_TOTAL
-        SAP_DIALOG_USAGE
-        SAP_SPOOL_FREE
-        SAP_SPOOL_TOTAL
-        SAP_SPOOL_USAGE
-        SAP_UPDATE_FREE
-        SAP_UPDATE_TOTAL
-        SAP_UPDATE_USAGE
-      }
-    }
-  }
-`
-
-const ListTodo = `
-  query {
-    listTodos(filter: {description: {between: ["21/08/2024", "27/08/2024"]}}, limit: 25) {
-      items {
-        description
-        id
-        name
-      }
-    }
-  }
-`
 
 const Test = () => {
   const [data, setData] = useState({ total: 100, free: 50 }); // default values for demo
@@ -55,6 +22,22 @@ const Test = () => {
 
   // const dialog = health.map(health => health.SAP_DIALOG_FREE)
 
+  async function fetchSmlg() {
+    const result = await client.graphql({
+    query: ListSmlg,
+  })
+  // console.log(result.data.listSMlGS.items)
+  const sortedNames = result.data.listSMlGS.items
+    .sort((a, b) => a.TIME.localeCompare(b.TIME))
+    .map(item => {
+      return { 
+        sap_response_time: item.SAP_RESPONSE_TIME, time: item.TIME
+      }
+    });
+    console.log(sortedNames);
+    setSortedItems(sortedNames);
+  }
+
   async function fetchHealth() {
       const result = await client.graphql({
       query: ListHealth,
@@ -64,35 +47,8 @@ const Test = () => {
     setHealth(result.data.listHEALTH.items)
   }
 
-  // async function storeTodo() {
-  //   const result = await client.graphql({
-  //     query: createTodo,
-  //     variables: {
-  //       input: {
-  //         name:"Dump1",
-  //         description:"29/08/2024",
-  //       }
-  //     }
-  //   });
-  //   console.log(result)
-  // }
-  
-  // async function changeTodo() {
-  //   const result = await client.graphql({
-  //     query: updateTodo,
-  //     variables: {
-  //       input: {
-  //         id: "4c4c35e2-ab77-4e9c-aa0a-ca55ada16170",
-  //         name:"Dump11",
-  //       }
-  //     }
-  //   });
-  //   console.log(result)
-  // }
-
   async function fetchTodos() {
     const result = await client.graphql({
-      // query: listTodos,
       query: ListTodo,
     });
     // console.log(result.data.listTodos.items)
@@ -122,11 +78,10 @@ const Test = () => {
         <main>
           <h1>Welcome {user.username}</h1>
           <button onClick={signOut}>Sign Out</button>
-          {/* <button onClick={storeTodo}>New Todo</button> */}
           <button onClick={fetchTodos}>Fetch Todos</button>
           <button onClick={fetchTodo}>Fetch Todo - test</button>
-          {/* <button onClick={changeTodo}>Change Todo - test</button> */}
           <button onClick={fetchHealth}>Fetch Health</button>
+          <button onClick={fetchSmlg}>Fetch SMLG</button>
         </main>
       )}
     </Authenticator>

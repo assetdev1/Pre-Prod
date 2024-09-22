@@ -16,7 +16,8 @@
         "S3AndCloudFront": {}
       },
       "auth": {
-        "sapmetrics203b48fd9": {}
+        "sapmetrics207c3368a07c3368a": {},
+        "userPoolGroups": {}
       },
       "api": {
         "sapmetrics2": {}

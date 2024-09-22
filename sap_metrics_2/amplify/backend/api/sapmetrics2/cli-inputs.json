@@ -4,12 +4,7 @@
     "apiName": "sapmetrics2",
     "serviceName": "AppSync",
     "defaultAuthType": {
-      "mode": "API_KEY",
-      "expirationTime": 365,
-      "apiKeyExpirationDate": "2025-09-17T22:01:20.520Z",
-      "keyDescription": "data_read"
-    },
-    "conflictResolution": {},
-    "additionalAuthTypes": []
+      "mode": "AWS_IAM"
+    }
   }
 }
