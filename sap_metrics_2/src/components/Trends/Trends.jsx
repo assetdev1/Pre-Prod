@@ -228,7 +228,7 @@ const Trends = () => {
     };
     ////////////////////////////////////////////////////////////////////////////
 
-    /////////////////////////////////Health//////////////////////////////////////
+    /////////////////////////////////Health WP//////////////////////////////////////
     const [data, setData] = useState({
       dialog: { total: 100, free: 50, usage: 0 },
       background: { total: 200, free: 100, usage: 0 },
@@ -298,39 +298,39 @@ const Trends = () => {
         <h4>Version 1.0.0</h4>     
         {/* <Link to="/">Go Back</Link>  */}
         <h2>Work Process Utilizations</h2>
-        <div className="circle-container-wrapper">
-          {categories.map((category, index) => {
-            const total = data[category].total;
-            const free = data[category].free;
-            const occupiedPercentage = calculateOccupiedPercentage(total, free);
-            const usage = data[category].usage;
-            // const usage = calculateUsage(total, free);
-            return (
-              <div
-                key={category}
-                className="circle-container"
-                onMouseEnter={() => setHoverIndex(index)}
-                onMouseLeave={() => setHoverIndex(null)}
-              >
-                <h3>{category.toUpperCase()}</h3>
-                <CircularProgressbar
-                  value={occupiedPercentage}
-                  text={hoverIndex === index ? `Free: ${free}` : `${Math.round(occupiedPercentage)}% Occupied`}
-                  styles={buildStyles({
-                    textSize: '16px',
-                    pathColor: colors[category],
-                    textColor: '#333',
-                    trailColor: '#d6d6d6',
-                    backgroundColor: '#f3f3f3',
-                  })}
-                />
-                <div className="usage-info">
-                  <span>Usage: {usage} </span>
+          <div className="circle-container-wrapper">
+            {categories.map((category, index) => {
+              const total = data[category].total;
+              const free = data[category].free;
+              const occupiedPercentage = calculateOccupiedPercentage(total, free);
+              const usage = data[category].usage;
+              // const usage = calculateUsage(total, free);
+              return (
+                <div
+                  key={category}
+                  className="circle-container"
+                  onMouseEnter={() => setHoverIndex(index)}
+                  onMouseLeave={() => setHoverIndex(null)}
+                >
+                  <h3>{category.toUpperCase()}</h3>
+                  <CircularProgressbar
+                    value={occupiedPercentage}
+                    text={hoverIndex === index ? `Free: ${free}` : `${Math.round(occupiedPercentage)}% Occupied`}
+                    styles={buildStyles({
+                      textSize: '16px',
+                      pathColor: colors[category],
+                      textColor: '#333',
+                      trailColor: '#d6d6d6',
+                      backgroundColor: '#f3f3f3',
+                    })}
+                  />
+                  <div className="usage-info">
+                    <span>Usage: {usage} </span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-      </div>
+              );
+            })}
+        </div>
 
         {trendsData.map((card, id)=> {
           return(
