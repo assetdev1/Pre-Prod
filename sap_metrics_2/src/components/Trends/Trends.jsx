@@ -9,19 +9,33 @@ import { UilClipboardAlt } from "@iconscout/react-unicons";
 import { Amplify } from 'aws-amplify';
 import awsExports from '../../aws-exports';
 import { generateClient } from 'aws-amplify/api';
+import { format } from 'date-fns';
 import dayjs from 'dayjs';
 // import { listSMlGS } from '../../graphql/queries';
-import { ListHealth, ListSmlg, ListHealthDialog } from '../../graphql/manipulated_queries';
+import { ListHealth, ListSmlg } from '../../graphql/manipulated_queries';
 
 
 Amplify.configure(awsExports);
 const client = generateClient();
 
 const Trends = () => {
+    ////////////////////////////////For date range filter////////////////////////////////////
+    const [startDate, setStartDate] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [endTime, setEndTime] = useState('');
+    const [data, setData] = useState([]);
 
-    //////////////////////////////SMLG////////////////////////////////////////////
+    // Handle Start Date/Time Change
+    const handleStartDateChange = (e) => setStartDate(e.target.value);
+    const handleStartTimeChange = (e) => setStartTime(e.target.value);
+
+    // Handle End Date/Time Change
+    const handleEndDateChange = (e) => setEndDate(e.target.value);
+    const handleEndTimeChange = (e) => setEndTime(e.target.value);
+
     const [sortedHealthDialog, setSortedHealthDialog] = useState([]);
-    const [sortedSMLG2, setSortedSMLG2] = useState([]);
+    const [sortedHealthBackground, setSortedHealthBackground] = useState([]);
 
     // Utility function to format and sort the fetched data
     const processSMLGData = (data) => {
@@ -32,71 +46,184 @@ const Trends = () => {
       });
     };
 
-    // Consolidated async function to fetch data
-    useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch both datasets simultaneously
-        const [result1, result2] = await Promise.all([
-          client.graphql({ query: ListHealthDialog }),
-          client.graphql({ query: ListHealthDialog }),
-        ]);
-
-        const sorted_result1 = processSMLGData(result1.data.listHEALTH);
-        // Step 2: Segregate properties into a new variable after processing
-        const values_segregated_1 = sorted_result1.map(entry => {
-          const { SAP_DIALOG_FREE, SAP_DIALOG_TOTAL, SAP_DIALOG_USAGE, id } = entry.reply_item; // Destructure the properties you need
-          return {
-            sap_dialog_free: SAP_DIALOG_FREE, // Segregate into new variables
-            sap_dialog_total: SAP_DIALOG_TOTAL,
-            sap_dialog_usage: SAP_DIALOG_USAGE,
-            time: id
-          };
-        });
-
-        const sorted_result2 = processSMLGData(result2.data.listHEALTH);
-        // Step 2: Segregate properties into a new variable after processing
-        const values_segregated_2 = sorted_result2.map(entry => {
-          const { SAP_DIALOG_FREE, SAP_DIALOG_TOTAL, SAP_DIALOG_USAGE, id } = entry.reply_item; // Destructure the properties you need
-          return {
-            sap_dialog_free: SAP_DIALOG_FREE, // Segregate into new variables
-            sap_dialog_total: SAP_DIALOG_TOTAL,
-            sap_dialog_usage: SAP_DIALOG_USAGE,
-            time: id
-          };
-        });
-
-        setSortedHealthDialog(values_segregated_1);
-        console.log(values_segregated_1)
-        setSortedSMLG2(values_segregated_2);
-        // console.log(values_segregated_2)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+    // Reset the Date and Time fields
+    const handleReset = () => {
+      setSelectedOption(null); // for auto-scroll
+      setStartDate('');
+      setStartTime('');
+      setEndDate('');
+      setEndTime('');
     };
-    fetchData(); // Trigger data fetch on component mount
-    }, []); // Empty dependency array ensures this runs once when the component mounts
+
+    // Format the selected dates and times into the required format and fetch data
+    const handleApply = async () => {
+    if (!startDate || !endDate || !startTime || !endTime) {
+      alert('Please select both date and time');
+      return;
+    }
+
+    const fromDate = format(new Date(`${startDate}T${startTime}`), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX").replace('Z', '');
+    const toDate = format(new Date(`${endDate}T${endTime}`), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX").replace('Z', '');
+
+    console.log(fromDate)
+    console.log(toDate)
+
+    // Build the dynamic query
+    const ListHealthDialog = `
+      query {
+        listHEALTH(filter: {id: {between: ["${fromDate}", "${toDate}"]}}, limit: 31) {
+          items {
+            id
+            SAP_DIALOG_FREE
+            SAP_DIALOG_TOTAL
+            SAP_DIALOG_USAGE
+          }
+        }
+      }
+    `;
+
+    const ListHealthBackgound = `
+      query {
+        listHEALTH(filter: {id: {between: ["${fromDate}", "${toDate}"]}}, limit: 31) {
+          items {
+            id
+            SAP_BACKGROUND_FREE
+            SAP_BACKGROUND_TOTAL
+            SAP_BACKGROUND_USAGE
+          }
+        }
+      }
+    `;
+
+
+    // Fetch Data using fromDate and toDate
+    await fetchDataWithDateRange(ListHealthDialog, ListHealthBackgound);
+  };
+
+  const fetchDataWithDateRange = async (dialogQuery, backgroundQuery) => {
+    try {
+      // Fetch both datasets simultaneously with dynamic dates
+      const [result1, result2] = await Promise.all([
+        client.graphql({ query: dialogQuery }),
+        client.graphql({ query: backgroundQuery }),
+      ]);
+
+      const sorted_result1 = processSMLGData(result1.data.listHEALTH);
+      const values_segregated_1 = sorted_result1.map((entry) => {
+        const { SAP_DIALOG_FREE, SAP_DIALOG_TOTAL, SAP_DIALOG_USAGE, id } = entry.reply_item; // Destructure the properties you need;
+        return {
+          sap_dialog_free: SAP_DIALOG_FREE,
+          sap_dialog_total: SAP_DIALOG_TOTAL,
+          sap_dialog_usage: SAP_DIALOG_USAGE,
+          time: id,
+        };
+      });
+
+      const sorted_result2 = processSMLGData(result2.data.listHEALTH);
+      const values_segregated_2 = sorted_result2.map((entry) => {
+        const { SAP_BACKGROUND_FREE, SAP_BACKGROUND_TOTAL, SAP_BACKGROUND_USAGE, id } = entry.reply_item; // Destructure the properties you need;
+        return {
+          sap_background_free: SAP_BACKGROUND_FREE,
+          sap_background_total: SAP_BACKGROUND_TOTAL,
+          sap_background_usage: SAP_BACKGROUND_USAGE,
+          time: id,
+        };
+      });
+
+      // Store the fetched data in the state
+      setSortedHealthDialog(values_segregated_1);
+      // console.log(values_segregated_1)
+      setSortedHealthBackground(values_segregated_2);
+      // console.log(values_segregated_2)
+      // setData([...values_segregated_1, ...values_segregated_2]);
+
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
+
+    /////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////FOR Circle and Graph////////////////////////////////////////////
+    // const [sortedHealthDialog, setSortedHealthDialog] = useState([]);
+    // const [sortedHealthBackground, setSortedHealthBackground] = useState([]);
+
+    // // Utility function to format and sort the fetched data
+    // const processSMLGData = (data) => {
+    //   return data.items.sort((a, b) => b.id.localeCompare(a.id)).map(item => {
+    //     return { 
+    //       reply_item: item
+    //     }
+    //   });
+    // };
+
+    // // Consolidated async function to fetch data
+    // useEffect(() => {
+    // const fetchData = async () => {
+    //   try {
+    //     // Fetch both datasets simultaneously
+    //     const [result1, result2] = await Promise.all([
+    //       client.graphql({ query: ListHealthDialog }),
+    //       client.graphql({ query: ListHealthDialog }),
+    //     ]);
+
+    //     const sorted_result1 = processSMLGData(result1.data.listHEALTH);
+    //     // Step 2: Segregate properties into a new variable after processing
+    //     const values_segregated_1 = sorted_result1.map(entry => {
+    //       const { SAP_DIALOG_FREE, SAP_DIALOG_TOTAL, SAP_DIALOG_USAGE, id } = entry.reply_item; // Destructure the properties you need
+    //       return {
+    //         sap_dialog_free: SAP_DIALOG_FREE, // Segregate into new variables
+    //         sap_dialog_total: SAP_DIALOG_TOTAL,
+    //         sap_dialog_usage: SAP_DIALOG_USAGE,
+    //         time: id
+    //       };
+    //     });
+
+    //     const sorted_result2 = processSMLGData(result2.data.listHEALTH);
+    //     // Step 2: Segregate properties into a new variable after processing
+    //     const values_segregated_2 = sorted_result2.map(entry => {
+    //       const { SAP_DIALOG_FREE, SAP_DIALOG_TOTAL, SAP_DIALOG_USAGE, id } = entry.reply_item; // Destructure the properties you need
+    //       return {
+    //         sap_dialog_free: SAP_DIALOG_FREE, // Segregate into new variables
+    //         sap_dialog_total: SAP_DIALOG_TOTAL,
+    //         sap_dialog_usage: SAP_DIALOG_USAGE,
+    //         time: id
+    //       };
+    //     });
+
+    //     setSortedHealthDialog(values_segregated_1);
+    //     console.log(values_segregated_1)
+    //     setSortedHealthBackground(values_segregated_2);
+    //     // console.log(values_segregated_2)
+    //   } catch (error) {
+    //     console.error("Error fetching data:", error);
+    //   }
+    // };
+    // fetchData(); // Trigger data fetch on component mount
+    // }, []); // Empty dependency array ensures this runs once when the component mounts
 
     // Function to format the date in ISO format
+    
     const formatDate = (str) => new Date(str).toISOString();
 
-    const data_2 = sortedHealthDialog.map((item) => {
-      const x = formatDate(item.time);
-      const y = Number(item.sap_dialog_free);
-      const itemDate = item.time.split("T")[0]; // Extract date portion (YYYY-MM-DD)
-      const today = new Date().toISOString().split("T")[0]; // Today's date in YYYY-MM-DD
-      // Check if the item's date matches today's date
-      if (itemDate === today) {
-        console.log(`Match found for today's date: ${item.time}`);
-      }
+    // const data_2 = sortedHealthDialog.map((item) => {
+    //   const x = formatDate(item.time);
+    //   const y = Number(item.sap_dialog_free);
+    //   const itemDate = item.time.split("T")[0]; // Extract date portion (YYYY-MM-DD)
+    //   const today = new Date().toISOString().split("T")[0]; // Today's date in YYYY-MM-DD
+    //   // Check if the item's date matches today's date
+    //   if (itemDate === today) {
+    //     console.log(`Match found for today's date: ${item.time}`);
+    //   }
       
-      // Print each mapping result
-      console.log(`xx: ${x}, yy: ${y}`);
+    //   // Print each mapping result
+    //   console.log(`xx: ${x}, yy: ${y}`);
     
-      // return { x, y };
-    });
+    //   // return { x, y };
+    // });
 
     // Trends Data
+    
     const trendsData = [
       {
         title: "Dialog Work Process",
@@ -131,15 +258,23 @@ const Trends = () => {
           backGround: "linear-gradient(180deg, #FF919D 0%, #FC929D 100%)",
           boxShadow: "0px 10px 20px 0px #FDC0C7",
         },
-        barValue: 35,
-        value: "14,270",
+        barValue: sortedHealthBackground.find((item) => {
+          const itemDate = item.time.split("T")[0];
+          const today = new Date().toISOString().split("T")[0];
+          return itemDate === today;  // Find item matching today's date
+        })?.sap_background_free || 0, // If no match, default to 0
+        value: sortedHealthBackground.find((item) => {
+          const itemDate = item.time.split("T")[0];
+          const today = new Date().toISOString().split("T")[0];
+          return itemDate === today;
+        })?.sap_background_total || 0, // If no match, default to 0
         png: UilClipboardAlt,
         series: [
           {
-            name: 'Review_2',
-            data: sortedHealthDialog.map((item) => ({
+            name: 'Review',
+            data: sortedHealthBackground.map((item) => ({
               x: formatDate(item.time),
-              y: Number(item.sap_dialog_total - item.sap_dialog_free),
+              y: Number(item.sap_background_total - item.sap_background_free),
             })),
           },
         ],
@@ -217,10 +352,6 @@ const Trends = () => {
     // State for Dropdown
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
-    
-    // State for Date Range Picker
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState(''); 
   
     const dropdownOptions = ['Dialog Work Process', 'System Dumps', 'Batch Jobs', 'Peak CPU Utilization', 'Memory Usage', 'Disk Usage'];
   
@@ -239,87 +370,12 @@ const Trends = () => {
       parentRefs.current[matchedIndex].scrollIntoView({ behavior: 'smooth' });
       }
     };
-  
-    // Date Range Handlers
-    const handleStartDateChange = (e) => {
-      setStartDate(e.target.value);
-      console.log(`Start Date: ${e.target.value}`);
-    };
-  
-    const handleEndDateChange = (e) => {
-      setEndDate(e.target.value);
-      console.log(`End Date: ${e.target.value}`);
-    };
 
-    // Reset Handler
-    const handleReset = () => {
-      setSelectedOption(null);
-      setStartDate('');
-      setEndDate('');
-    };
-    ////////////////////////////////////////////////////////////////////////////
-
-    /////////////////////////////////Health WP//////////////////////////////////////
-    const [data, setData] = useState({
-      dialog: { total: 100, free: 50, usage: 0 },
-      background: { total: 200, free: 100, usage: 0 },
-      spool: { total: 300, free: 150, usage: 0 },
-      update: { total: 400, free: 200, usage: 0 }
-    }); // default values for demo
-    const [hoverIndex, setHoverIndex] = useState(null);
-
-    const [health, setHealth] = useState([]);
-
-    // Fetch data from DynamoDB via GraphQL
-    useEffect(() => {
-      async function fetchHealth() {
-        try {
-          const result = await client.graphql({
-            query: ListHealth,
-          })
-          console.log(result.data.listHEALTH.items)
-          // setHealth(result.data.listHEALTH.items)
-          const dialog_total = Number(result.data.listHEALTH.items[0].SAP_DIALOG_TOTAL);
-          const dialog_free = Number(result.data.listHEALTH.items[0].SAP_DIALOG_FREE);
-          const dialog_usage = Number(result.data.listHEALTH.items[0].SAP_DIALOG_USAGE);
-          
-          const background_total = Number(result.data.listHEALTH.items[0].SAP_BACKGROUND_TOTAL);
-          const background_free = Number(result.data.listHEALTH.items[0].SAP_BACKGROUND_FREE);
-          const background_usage = Number(result.data.listHEALTH.items[0].SAP_BACKGROUND_USAGE);
-          
-          const spool_total = Number(result.data.listHEALTH.items[0].SAP_SPOOL_TOTAL);
-          const spool_free = Number(result.data.listHEALTH.items[0].SAP_SPOOL_FREE);
-          const spool_usage = Number(result.data.listHEALTH.items[0].SAP_SPOOL_USAGE);
-          
-          const update_total = Number(result.data.listHEALTH.items[0].SAP_UPDATE_TOTAL);
-          const update_free = Number(result.data.listHEALTH.items[0].SAP_UPDATE_FREE);
-          const update_usage = Number(result.data.listHEALTH.items[0].SAP_UPDATE_USAGE);
-          setData({ 
-            dialog: { total: dialog_total, free: dialog_free, usage: dialog_usage },
-            background: { total: background_total, free: background_free, usage: background_usage },
-            spool: { total: spool_total, free: spool_free, usage: spool_usage },
-            update: { total: update_total, free: update_free, usage: update_usage }
-           });
-        } catch (error) {
-          console.error('Error fetching space data:', error);
-        }
-      };
-      
-      fetchHealth();
-    }, []);
-
-    // Function to calculate percentage occupied and usage
-    const calculateOccupiedPercentage = (total, free) => ((total - free) / total) * 100;
-    // const calculateUsage = (total, free) => total - free;
-
-    // Array for rendering multiple categories dynamically with shades of blue
-    const categories = ['dialog', 'background', 'spool', 'update'];
-    const colors = {
-      dialog: '#4A90E2',    // Light blue for dialog
-      background: '#007AFF', // Classic blue for background
-      spool: '#005EB8',     // Darker blue for spool
-      update: '#003366'     // Dark navy blue for update
-    };
+    // // Reset Handler
+    // const handleReset = () => {
+    //    setSelectedOption(null);
+    //
+    // };
     ////////////////////////////////////////////////////////////////////////////
 
   return (
@@ -342,7 +398,7 @@ const Trends = () => {
       <div  className='right-content'>
         <h3>Filter</h3>
         <div className="combined-component">
-        {/* Dropdown Component */}
+          {/* Dropdown Component */}
           <div className="dropdown">
             <button className="dropdown-button" onClick={toggleDropdown}>
               {selectedOption ? selectedOption : 'Select an option'}
@@ -359,29 +415,48 @@ const Trends = () => {
             )}
           </div>
 
-        {/* Date Range Picker Component */}
+          {/* Date Range Picker Component */}
           <div className="date-range-picker">
+            {/* Start Date and Time */}
             <input 
               type="date" 
               className="date-input" 
               value={startDate} 
               onChange={handleStartDateChange} 
             />
+            <input 
+              type="time" 
+              className="time-input" 
+              value={startTime} 
+              onChange={handleStartTimeChange} 
+            />
+
             <span className="date-separator">to</span>
+
+            {/* End Date and Time */}
             <input 
               type="date" 
               className="date-input" 
               value={endDate} 
               onChange={handleEndDateChange} 
             />
-          </div>
+            <input 
+              type="time" 
+              className="time-input" 
+              value={endTime} 
+              onChange={handleEndTimeChange} 
+            />
 
-          {/* Reset Button */}
-          <button className="reset-button" onClick={handleReset}>
-            Reset
-          </button>
+            {/* Apply and Reset Buttons */}
+            <button className="apply-button" onClick={handleApply}>
+              Apply
+            </button>
+            <button className="reset-button" onClick={handleReset}>
+              Reset
+            </button>
+          </div>
         </div>
-      </div>
+        </div>
     </>
    
   );
