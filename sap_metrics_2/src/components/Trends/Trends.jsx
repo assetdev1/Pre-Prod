@@ -11,7 +11,7 @@ import awsExports from '../../aws-exports';
 import { generateClient } from 'aws-amplify/api';
 import dayjs from 'dayjs';
 // import { listSMlGS } from '../../graphql/queries';
-import { ListHealth, ListSmlg } from '../../graphql/manipulated_queries';
+import { ListHealth, ListSmlg, ListHealthDialog } from '../../graphql/manipulated_queries';
 
 
 Amplify.configure(awsExports);
@@ -20,14 +20,14 @@ const client = generateClient();
 const Trends = () => {
 
     //////////////////////////////SMLG////////////////////////////////////////////
-    const [sortedSMLG1, setSortedSMLG1] = useState([]);
+    const [sortedHealthDialog, setSortedHealthDialog] = useState([]);
     const [sortedSMLG2, setSortedSMLG2] = useState([]);
 
     // Utility function to format and sort the fetched data
     const processSMLGData = (data) => {
-      return data.items.sort((a, b) => a.TIME.localeCompare(b.TIME)).map(item => {
+      return data.items.sort((a, b) => b.id.localeCompare(a.id)).map(item => {
         return { 
-          sap_response_time: item.SAP_RESPONSE_TIME, time: item.TIME
+          reply_item: item
         }
       });
     };
@@ -38,17 +38,38 @@ const Trends = () => {
       try {
         // Fetch both datasets simultaneously
         const [result1, result2] = await Promise.all([
-          client.graphql({ query: ListSmlg }),
-          client.graphql({ query: ListSmlg }),
+          client.graphql({ query: ListHealthDialog }),
+          client.graphql({ query: ListHealthDialog }),
         ]);
 
-        const sorted_result1 = processSMLGData(result1.data.listSMlGS);
-        const sorted_result2 = processSMLGData(result2.data.listSMlGS);
+        const sorted_result1 = processSMLGData(result1.data.listHEALTH);
+        // Step 2: Segregate properties into a new variable after processing
+        const values_segregated_1 = sorted_result1.map(entry => {
+          const { SAP_DIALOG_FREE, SAP_DIALOG_TOTAL, SAP_DIALOG_USAGE, id } = entry.reply_item; // Destructure the properties you need
+          return {
+            sap_dialog_free: SAP_DIALOG_FREE, // Segregate into new variables
+            sap_dialog_total: SAP_DIALOG_TOTAL,
+            sap_dialog_usage: SAP_DIALOG_USAGE,
+            time: id
+          };
+        });
 
-        setSortedSMLG1(sorted_result1);
-        console.log(sorted_result1)
-        setSortedSMLG2(sorted_result2);
-        console.log(sorted_result2)
+        const sorted_result2 = processSMLGData(result2.data.listHEALTH);
+        // Step 2: Segregate properties into a new variable after processing
+        const values_segregated_2 = sorted_result2.map(entry => {
+          const { SAP_DIALOG_FREE, SAP_DIALOG_TOTAL, SAP_DIALOG_USAGE, id } = entry.reply_item; // Destructure the properties you need
+          return {
+            sap_dialog_free: SAP_DIALOG_FREE, // Segregate into new variables
+            sap_dialog_total: SAP_DIALOG_TOTAL,
+            sap_dialog_usage: SAP_DIALOG_USAGE,
+            time: id
+          };
+        });
+
+        setSortedHealthDialog(values_segregated_1);
+        console.log(values_segregated_1)
+        setSortedSMLG2(values_segregated_2);
+        // console.log(values_segregated_2)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -56,14 +77,18 @@ const Trends = () => {
     fetchData(); // Trigger data fetch on component mount
     }, []); // Empty dependency array ensures this runs once when the component mounts
 
-    // // Utility function to format dates
-    // const formatDate = (str) => new Date(str.slice(0, 10) + ' ' + str.slice(10));
     // Function to format the date in ISO format
     const formatDate = (str) => new Date(str).toISOString();
 
-    const data_2 = sortedSMLG1.map((item) => {
+    const data_2 = sortedHealthDialog.map((item) => {
       const x = formatDate(item.time);
-      const y = Number(item.sap_response_time);
+      const y = Number(item.sap_dialog_free);
+      const itemDate = item.time.split("T")[0]; // Extract date portion (YYYY-MM-DD)
+      const today = new Date().toISOString().split("T")[0]; // Today's date in YYYY-MM-DD
+      // Check if the item's date matches today's date
+      if (itemDate === today) {
+        console.log(`Match found for today's date: ${item.time}`);
+      }
       
       // Print each mapping result
       console.log(`xx: ${x}, yy: ${y}`);
@@ -71,25 +96,31 @@ const Trends = () => {
       // return { x, y };
     });
 
-    // console.log(data_2)
-
     // Trends Data
     const trendsData = [
       {
-        title: "Dialog Response Time",
+        title: "Dialog Work Process",
         color: {
           backGround: "linear-gradient(180deg, #bb67ff 0%, #c484f3 100%)",
           boxShadow: "0px 10px 20px 0px #e0c6f5",
         },
-        barValue: 85,
-        value: "25,970",
+        barValue: sortedHealthDialog.find((item) => {
+          const itemDate = item.time.split("T")[0];
+          const today = new Date().toISOString().split("T")[0];
+          return itemDate === today;  // Find item matching today's date
+        })?.sap_dialog_free || 0, // If no match, default to 0
+        value: sortedHealthDialog.find((item) => {
+          const itemDate = item.time.split("T")[0];
+          const today = new Date().toISOString().split("T")[0];
+          return itemDate === today;
+        })?.sap_dialog_total || 0, // If no match, default to 0
         png: UilClipboardAlt,
         series: [
           {
             name: 'Review',
-            data: sortedSMLG1.map((item) => ({
+            data: sortedHealthDialog.map((item) => ({
               x: formatDate(item.time),
-              y: Number(item.sap_response_time),
+              y: Number(item.sap_dialog_total - item.sap_dialog_free),
             })),
           },
         ],
@@ -106,9 +137,9 @@ const Trends = () => {
         series: [
           {
             name: 'Review_2',
-            data: sortedSMLG2.map((item) => ({
+            data: sortedHealthDialog.map((item) => ({
               x: formatDate(item.time),
-              y: Number(item.sap_response_time),
+              y: Number(item.sap_dialog_total - item.sap_dialog_free),
             })),
           },
         ],
@@ -191,7 +222,7 @@ const Trends = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState(''); 
   
-    const dropdownOptions = ['Dialog Response Time', 'System Dumps', 'Batch Jobs', 'Peak CPU Utilization', 'Memory Usage', 'Disk Usage'];
+    const dropdownOptions = ['Dialog Work Process', 'System Dumps', 'Batch Jobs', 'Peak CPU Utilization', 'Memory Usage', 'Disk Usage'];
   
     // Dropdown Handlers
     const toggleDropdown = () => setIsOpen(!isOpen);
@@ -297,40 +328,6 @@ const Trends = () => {
         <h1>Trending Page</h1>
         <h4>Version 1.0.0</h4>     
         {/* <Link to="/">Go Back</Link>  */}
-        <h2>Work Process Utilizations</h2>
-          <div className="circle-container-wrapper">
-            {categories.map((category, index) => {
-              const total = data[category].total;
-              const free = data[category].free;
-              const occupiedPercentage = calculateOccupiedPercentage(total, free);
-              const usage = data[category].usage;
-              // const usage = calculateUsage(total, free);
-              return (
-                <div
-                  key={category}
-                  className="circle-container"
-                  onMouseEnter={() => setHoverIndex(index)}
-                  onMouseLeave={() => setHoverIndex(null)}
-                >
-                  <h3>{category.toUpperCase()}</h3>
-                  <CircularProgressbar
-                    value={occupiedPercentage}
-                    text={hoverIndex === index ? `Free: ${free}` : `${Math.round(occupiedPercentage)}% Occupied`}
-                    styles={buildStyles({
-                      textSize: '16px',
-                      pathColor: colors[category],
-                      textColor: '#333',
-                      trailColor: '#d6d6d6',
-                      backgroundColor: '#f3f3f3',
-                    })}
-                  />
-                  <div className="usage-info">
-                    <span>Usage: {usage} </span>
-                  </div>
-                </div>
-              );
-            })}
-        </div>
 
         {trendsData.map((card, id)=> {
           return(

@@ -6,7 +6,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "auth": {
-    "sapmetrics207c3368a07c3368a": {
+    "sapmetrics23177e1203177e120": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -17,6 +17,15 @@ export type AmplifyDependentResourcesAttributes = {
     },
     "userPoolGroups": {
       "adminGroupRole": "string"
+    }
+  },
+  "function": {
+    "sapmetrics23177e1203177e120PreSignup": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
     }
   },
   "hosting": {

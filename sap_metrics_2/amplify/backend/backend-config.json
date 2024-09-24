@@ -15,9 +15,19 @@
     }
   },
   "auth": {
-    "sapmetrics207c3368a07c3368a": {
+    "sapmetrics23177e1203177e120": {
       "customAuth": false,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "sapmetrics23177e1203177e120PreSignup",
+          "triggerProvider": "Cognito"
+        }
+      ],
       "frontendAuthConfig": {
         "mfaConfiguration": "OFF",
         "mfaTypes": [
@@ -49,17 +59,50 @@
             "IdentityPoolId"
           ],
           "category": "auth",
-          "resourceName": "sapmetrics207c3368a07c3368a"
+          "resourceName": "sapmetrics23177e1203177e120"
         }
       ],
       "providerPlugin": "awscloudformation",
       "service": "Cognito-UserPool-Groups"
     }
   },
+  "function": {
+    "sapmetrics23177e1203177e120PreSignup": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
   "hosting": {
     "S3AndCloudFront": {
       "providerPlugin": "awscloudformation",
       "service": "S3AndCloudFront"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_sapmetrics23177e1203177e120PreSignup_DOMAINALLOWLIST": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sapmetrics23177e1203177e120PreSignup"
+        }
+      ]
+    },
+    "AMPLIFY_function_sapmetrics23177e1203177e120PreSignup_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sapmetrics23177e1203177e120PreSignup"
+        }
+      ]
+    },
+    "AMPLIFY_function_sapmetrics23177e1203177e120PreSignup_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sapmetrics23177e1203177e120PreSignup"
+        }
+      ]
     }
   }
 }

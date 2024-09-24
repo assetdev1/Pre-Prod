@@ -9,18 +9,26 @@
       "UnauthRoleName": "amplify-sapmetrics2-dev-04b11-unauthRole",
       "StackName": "amplify-sapmetrics2-dev-04b11",
       "StackId": "arn:aws:cloudformation:ap-south-1:149536492076:stack/amplify-sapmetrics2-dev-04b11/1c717270-7538-11ef-a20f-0ab2a1a612c5",
-      "AmplifyAppId": "dpjd6yt1zwe1c"
+      "AmplifyAppId": "dpjd6yt1zwe1c",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-sapmetrics2-dev-04b11-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "hosting": {
         "S3AndCloudFront": {}
       },
-      "auth": {
-        "sapmetrics207c3368a07c3368a": {},
-        "userPoolGroups": {}
-      },
       "api": {
         "sapmetrics2": {}
+      },
+      "auth": {
+        "sapmetrics23177e1203177e120": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "sapmetrics23177e1203177e120PreSignup": {
+          "DOMAINALLOWLIST": "pwc.com, compass-group.com",
+          "deploymentBucketName": "amplify-sapmetrics2-dev-04b11-deployment",
+          "s3Key": "amplify-builds/sapmetrics23177e1203177e120PreSignup-73574b77466f48497479-build.zip"
+        }
       }
     }
   }

@@ -43,3 +43,15 @@ query {
 }
 `
 
+export const ListHealthDialog = `
+  query {
+    listHEALTH(filter: {id: {between: ["2024-09-20T06:36:35.912042", "2024-10-30T23:59:59.000000"]}}, limit: 31) {
+      items {
+        id
+        SAP_DIALOG_FREE
+        SAP_DIALOG_TOTAL
+        SAP_DIALOG_USAGE
+      }
+    }
+  }
+`
