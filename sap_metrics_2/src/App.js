@@ -276,6 +276,7 @@ function App() {
       {({ signOut, user }) => (
         <Router>
           <div className="App">
+            
             {/* For OG view */}
             {/* <div className="AppGlass">
               <Sidebar logOut={ signOut }/>

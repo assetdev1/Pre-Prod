@@ -200,7 +200,7 @@
   }
 
   .lower {
-    grid-template-columns: 1fr 1fr; /* 2 columns */
+    /* grid-template-columns: 1fr 1fr; 2 columns */
     overflow-y: auto; /* Allow scrolling within lower */
   }
 
