@@ -448,12 +448,14 @@ const Trends = () => {
             />
 
             {/* Apply and Reset Buttons */}
-            <button className="apply-button" onClick={handleApply}>
-              Apply
-            </button>
-            <button className="reset-button" onClick={handleReset}>
-              Reset
-            </button>
+            <section>
+              <button className="apply-button" onClick={handleApply}>
+                Apply
+              </button>
+              <button className="reset-button" onClick={handleReset}>
+                Reset
+              </button>
+            </section>
           </div>
         </div>
         </div>
