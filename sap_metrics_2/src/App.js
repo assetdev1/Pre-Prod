@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 
 import MainDash from './components/MainDash/MainDash';
 import RightSide from './components/RightSide/RightSide';
@@ -12,6 +12,8 @@ import Test from './components/Test/Test';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Authenticator, View, Image, useTheme, Text, Heading, useAuthenticator, Button } from '@aws-amplify/ui-react';
+
+import PwcLogo from './imgs/pwc_logo.png';
 
 function App() {
 
@@ -249,12 +251,32 @@ function App() {
     },
   };
 
+  // Date state for the filter
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  // Handlers for date change
+  const handleStartDateChange = (e) => setStartDate(e.target.value);
+  const handleEndDateChange = (e) => setEndDate(e.target.value);
+
+  // Apply button functionality
+  const handleApply = () => {
+    console.log('Applied:', { startDate, endDate });
+  };
+
+  // Reset button functionality
+  const handleReset = () => {
+    setStartDate('');
+    setEndDate('');
+  };
+
   return (
     <Authenticator loginMechanisms={['email']} formFields={formFields} components={components}>
       {({ signOut, user }) => (
         <Router>
           <div className="App">
-            <div className="AppGlass">
+            {/* For OG view */}
+            {/* <div className="AppGlass">
               <Sidebar logOut={ signOut }/>
               <Routes>
                 <Route path="/" element={
@@ -269,7 +291,69 @@ function App() {
                 <Route path="/trends" element={<Trends/>} />
                 <Route path="/test" element={<Test/>} />
               </Routes>
+            </div> */}
+
+            {/* For Recent planned view */}
+            <div className='NewAppGlass'>
+              
+              {/* Navigation Bar */}
+              <nav className="navbar">
+                <div className="navbar-left">
+                  <img src={ PwcLogo } alt="Symbolic Logo" className="navbar-logo" />
+                </div>
+                <div className="navbar-right">
+                  <input
+                    type="datetime-local"
+                    className="date-input"
+                    value={startDate}
+                    onChange={handleStartDateChange}
+                  />
+                  <span className="date-separator">TO</span>
+                  <input
+                    type="datetime-local"
+                    className="date-input"
+                    value={endDate}
+                    onChange={handleEndDateChange}
+                  />
+
+                  {/* Apply Button */}
+                  <button className="apply-button" onClick={handleApply}>Apply</button>
+                  {/* Reset Button */}
+                  <button className="reset-button" onClick={handleReset}>Reset</button>
+
+                </div>
+              </nav>
+
+              {/* Upper section */}
+              <div className="upper">
+                <div className="upper_Left">
+                  {/* Space for future content */}
+                </div>
+                <div className="upper_Right">
+                  <div className="upper_Right_upper">
+                    {/* Space for future content */}
+                  </div>
+                  <div className="upper_Right_lower">
+                    {/* Space for future content */}
+                  </div>
+                </div>
+              </div>
+
+              {/* Lower section */}
+              <div className="lower">
+                <div className="lower_Left">
+                  {/* Space for future content */}
+                </div>
+                <div className="lower_Middle">
+                  {/* Space for future content */}
+                </div>
+                <div className="lower_Right">
+                  {/* Space for future content */}
+                </div>
+              </div>
+
             </div>
+
           </div>
         </Router> 
       )}
