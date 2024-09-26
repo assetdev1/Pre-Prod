@@ -12,6 +12,11 @@
   --activeItem: #1579e354;
   --whiteShade: #f4f4f4;
   --blueShade: #a3d5ff;
+  /* --new UI -- */
+  --buttonBackground: #128bf5;
+  --buttonHover: #8bf512;
+  --resetButtonBackground: #e72412;
+  --resetButtonHover: #128bf5;
 }
 
 .App{
@@ -125,6 +130,80 @@
   background-color: var(--resetButtonHover);
 }
 
+.navbar-right-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  /* width: 250px; */
+  z-index: 999;
+  /* background-color: var(--navColor); */
+  backdrop-filter: blur(10px);
+  /* padding: 5px 5px; */
+  /* border-radius: 1rem; */
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
+  margin: 10px;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.navbar-right-sidebar li {
+  width: 100%;
+}
+
+.navbar-right-sidebar a{
+  width: 100%;
+}
+
+.date-input-sidebar {
+  padding: 8px;
+  border: 1px solid var(--inputBorderColor);
+  border-radius: 5px;
+  /* margin-left: 10px; */
+  margin: 10px;
+  display: block;
+}
+
+/* Apply and Reset buttons */
+.apply-button-sidebar, .reset-button-sidebar {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  /* margin-left: 10px; */
+  margin: 10px;
+  cursor: pointer;
+  background-color: var(--buttonBackground);
+  color: white;
+  font-weight: bold;
+  /* display: block; */
+}
+
+.apply-button-sidebar:hover {
+  background-color: var(--buttonHover);
+}
+
+.reset-button-sidebar {
+  background-color: var(--resetButtonBackground);
+}
+
+.reset-button-sidebar:hover {
+  background-color: var(--resetButtonHover);
+}
+
+.expanded_sidebar{
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  height: 75px;
+  width: 100%; /* Optional: Takes full width */
+}
+
+.showFilter{
+  display: none;
+}
+
 /* Upper section grid */
 .upper {
   display: grid;
@@ -190,6 +269,14 @@
     overflow-y: auto; /* Enable vertical scrolling */
   }
 
+  .navbar-right {
+    display:none;
+  }
+
+  .showFilter{
+    display: flex;
+  }
+
   .upper {
     grid-template-columns: 1fr; /* Stack upper_Left and upper_Right */
     /* overflow-y: auto; /* Allow scrolling within upper */
@@ -245,6 +332,7 @@
   .lower_Left, .lower_Middle, .lower_Right {
     padding: 15px;
   }
+
   /* /////////////////ENd of New code////////////////// */
 
 }

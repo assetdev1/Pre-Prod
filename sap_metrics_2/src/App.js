@@ -14,6 +14,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Authenticator, View, Image, useTheme, Text, Heading, useAuthenticator, Button } from '@aws-amplify/ui-react';
 
 import PwcLogo from './imgs/pwc_logo.png';
+import { alignProperty } from '@mui/material/styles/cssUtils';
 // import
 
 function App() {
@@ -271,6 +272,22 @@ function App() {
     setEndDate('');
   };
 
+  const [navOpen, setNavOpen] = useState(false);
+
+  const toggleNav = () => {
+    setNavOpen(!navOpen);
+  };
+
+  const showSidebar = () => {
+    const sidebar = document.querySelector('.navbar-right-sidebar')
+    sidebar.style.display = 'flex'
+  }
+
+  const hideSidebar = () => {
+    const sidebar = document.querySelector('.navbar-right-sidebar')
+    sidebar.style.display = 'none'
+  }
+   
   return (
     <Authenticator loginMechanisms={['email']} formFields={formFields} components={components}>
       {({ signOut, user }) => (
@@ -303,6 +320,8 @@ function App() {
                 <div className="navbar-left">
                   <img src={ PwcLogo } alt="Symbolic Logo" className="navbar-logo" />
                 </div>
+
+                {/* for normal screen before 1200px */}
                 <div className="navbar-right">
                   <input
                     type="datetime-local"
@@ -317,13 +336,44 @@ function App() {
                     value={endDate}
                     onChange={handleEndDateChange}
                   />
-
                   {/* Apply Button */}
                   <button className="apply-button" onClick={handleApply}>Apply</button>
                   {/* Reset Button */}
                   <button className="reset-button" onClick={handleReset}>Reset</button>
-
                 </div>
+
+                <section className='showFilter' onClick={showSidebar}>
+                  <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5f6368"><path d="M440-160q-17 0-28.5-11.5T400-200v-240L163.33-742q-14.33-18-4.16-38 10.16-20 32.83-20h576q22.67 0 32.83 20 10.17 20-4.16 38L560-440v240q0 17-11.5 28.5T520-160h-80Zm40-286.67 226-286.66H254l226 286.66Zm0 0Z"/></svg>
+                </section>
+
+                {/* for screen after 1200px */}
+                <div className="navbar-right-sidebar">
+                  <input
+                    type="datetime-local"
+                    className="date-input-sidebar"
+                    value={startDate}
+                    onChange={handleStartDateChange}
+                  />
+                  
+                  <span className="date-separator">TO</span>
+                
+                  <input
+                    type="datetime-local"
+                    className="date-input-sidebar"
+                    value={endDate}
+                    onChange={handleEndDateChange}
+                  />
+                  <section>
+                    {/* Apply Button */}
+                    <button className="apply-button-sidebar" onClick={handleApply}>Apply</button>
+                    {/* Reset Button */}
+                    <button className="reset-button-sidebar" onClick={handleReset}>Reset</button>
+                  </section>
+                  <section className='expanded_sidebar' onClick={hideSidebar}>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                  </section>
+                </div>
+
               </nav>
 
               {/* Upper section */}
