@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "sapmetrics23177e120_identitypool_3177e120",
+    "identityPoolName": "sapmetrics238e1468a_identitypool_38e1468a",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "sapmet3177e120",
-    "userPoolName": "sapmetrics23177e120_userpool_3177e120",
+    "resourceNameTruncated": "sapmet38e1468a",
+    "userPoolName": "sapmetrics238e1468a_userpool_38e1468a",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -14,8 +14,8 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "SAP Metrics verification code",
-    "emailVerificationMessage": "Your verification code for Email registration is '{####}'",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
@@ -31,10 +31,10 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "sapmet3177e120_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "sapmet38e1468a_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "3177e120",
-    "resourceName": "sapmetrics23177e1203177e120",
+    "sharedId": "38e1468a",
+    "resourceName": "sapmetrics238e1468a38e1468a",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "manual",
     "thirdPartyAuth": false,

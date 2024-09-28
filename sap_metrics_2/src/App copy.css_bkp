@@ -208,6 +208,54 @@
   cursor: pointer;
 }
 
+/* Upper section grid */
+.upper {
+  display: grid;
+  grid-template-columns: 85% 15%;
+  gap: 16px;
+}
+
+/* Upper Left */
+.upper_Left {
+  background-color: var(--whiteShade);
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+/* Upper Right */
+.upper_Right {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+  padding-right: 17px;
+}
+
+.upper_Right_upper, 
+.upper_Right_lower {
+  background-color: var(--blueShade);
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+/* Lower section grid */
+.lower {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.lower_Left,
+.lower_Middle,
+.lower_Right {
+  background-color: var(--whiteShade);
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+
 /* /////////////////ENd of New code////////////////// */
 
 
@@ -238,6 +286,20 @@
 
   .logout_for_768 {
     display: none;
+  }
+
+  .upper {
+    grid-template-columns: 1fr; /* Stack upper_Left and upper_Right */
+    /* overflow-y: auto; /* Allow scrolling within upper */
+  }
+
+  .upper_Right {
+    width: 100%;
+  }
+
+  .lower {
+    /* grid-template-columns: 1fr 1fr; 2 columns */
+    overflow-y: auto; /* Allow scrolling within lower */
   }
 
   /* /////////////////ENd of New code////////////////// */
@@ -275,6 +337,28 @@
     bottom: 10px;  /* Adjust as per your preference */
     right: 10px;   /* Adjust as per your preference */
     cursor: pointer;
+  }
+
+  .upper {
+    grid-template-columns: 1fr; /* Stack the divisions */
+    /* overflow-y: auto; /*Allow scrolling for upper */
+  }
+
+  .upper_Right {
+    display: grid;
+    grid-template-rows: 1fr 1fr; 
+    /* grid-template-rows: 1fr; /*Stack upper_Right_upper and upper_Right_lower vertically */
+    /* overflow-y: auto; /* Enable scroll if content exceeds */
+  }
+
+  .lower {
+    grid-template-columns: 1fr; /* Stack lower_Left, lower_Middle, and lower_Right */
+    overflow-y: auto; /* Scroll if lower content exceeds */
+  }
+
+  .upper_Left, .upper_Right_upper, .upper_Right_lower,
+  .lower_Left, .lower_Middle, .lower_Right {
+    padding: 15px;
   }
 
   /* /////////////////ENd of New code////////////////// */

@@ -1,0 +1,13 @@
+.lower_Right {
+  background-color: #f4f4f4;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    .lower_Right {
+        padding: 15px;
+      }
+}
+

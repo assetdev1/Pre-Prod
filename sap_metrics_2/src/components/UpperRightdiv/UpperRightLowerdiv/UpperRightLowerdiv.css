@@ -1,0 +1,12 @@
+.upper_Right_lower {
+    background-color: #a3d5ff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+  }
+  
+@media screen and (max-width: 768px) {
+    .upper_Right_lower {
+      padding: 15px;
+    }
+  }

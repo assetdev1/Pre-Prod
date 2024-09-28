@@ -1,0 +1,20 @@
+/* Upper section grid */
+.upper {
+    display: grid;
+    grid-template-columns: 85% 15%;
+    gap: 16px;
+  }
+  
+@media screen and (max-width: 1200px) {
+    .upper {
+        grid-template-columns: 1fr; /* Stack upper_Left and upper_Right */
+        /* overflow-y: auto; /* Allow scrolling within upper */
+      }
+}
+
+@media screen and (max-width: 768px) {
+    .upper {
+        grid-template-columns: 1fr; /* Stack the divisions */
+        /* overflow-y: auto; /*Allow scrolling for upper */
+      }
+}

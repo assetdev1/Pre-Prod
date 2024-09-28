@@ -1,0 +1,22 @@
+/* Upper Right */
+.upper_Right {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 16px;
+    padding-right: 17px;
+  }
+
+@media screen and (max-width: 1200px) {
+    .upper_Right {
+        width: 100%;
+      }  
+}
+
+@media screen and (max-width: 768px) {
+    .upper_Right {
+        display: grid;
+        grid-template-rows: 1fr 1fr; 
+        /* grid-template-rows: 1fr; /*Stack upper_Right_upper and upper_Right_lower vertically */
+        /* overflow-y: auto; /* Enable scroll if content exceeds */
+      }
+}

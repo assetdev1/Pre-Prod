@@ -1,9 +1,6 @@
 import './App.css';
 import React, { useState } from 'react';
 
-import Upperdiv from './components/Upperdiv/Upperdiv';
-import Lowerdiv from './components/Lowerdiv/Lowerdiv';
-
 // import MainDash from './components/MainDash/MainDash';
 // import RightSide from './components/RightSide/RightSide';
 // import Sidebar from './components/Sidebar/Sidebar';
@@ -270,19 +267,9 @@ function App() {
   const handleStartDateChange = (e) => setStartDate(e.target.value);
   const handleEndDateChange = (e) => setEndDate(e.target.value);
 
-  // This will hold the function passed down from UpperRight.jsx
-  const [triggerFunctionInUpperRight, setTriggerFunctionInUpperRight] = useState(null);
-
   // Apply button functionality
   const handleApply = () => {
-    if (!startDate || !endDate) {
-      alert('Please select both date and time');
-      return;
-    }
     console.log('Applied:', { startDate, endDate });
-    if (triggerFunctionInUpperRight) {
-      triggerFunctionInUpperRight(); // Call the function passed from UpperRight.jsx
-    }
   };
 
   // Reset button functionality
@@ -333,6 +320,7 @@ function App() {
 
             {/* For Recent planned view */}
             <div className='NewAppGlass'>
+              
               {/* Navigation Bar */}
               <nav className="navbar">
                 <div className="navbar-left">
@@ -402,10 +390,32 @@ function App() {
               </nav>
 
               {/* Upper section */}
-              <Upperdiv startDate={startDate} endDate={endDate} setTriggerFunctionInUpperRight={setTriggerFunctionInUpperRight} />
+              <div className="upper">
+                <div className="upper_Left">
+                  {/* Space for future content */}
+                </div>
+                <div className="upper_Right">
+                  <div className="upper_Right_upper">
+                    {/* Space for future content */}
+                  </div>
+                  <div className="upper_Right_lower">
+                    {/* Space for future content */}
+                  </div>
+                </div>
+              </div>
 
               {/* Lower section */}
-              <Lowerdiv startDate={startDate} endDate={endDate} />
+              <div className="lower">
+                <div className="lower_Left">
+                  {/* Space for future content */}
+                </div>
+                <div className="lower_Middle">
+                  {/* Space for future content */}
+                </div>
+                <div className="lower_Right">
+                  {/* Space for future content */}
+                </div>
+              </div>
 
             </div>
 

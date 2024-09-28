@@ -15,7 +15,7 @@
     }
   },
   "auth": {
-    "sapmetrics23177e1203177e120": {
+    "sapmetrics238e1468a38e1468a": {
       "customAuth": false,
       "dependsOn": [
         {
@@ -24,7 +24,7 @@
             "Name"
           ],
           "category": "function",
-          "resourceName": "sapmetrics23177e1203177e120PreSignup",
+          "resourceName": "sapmetrics238e1468a38e1468aPreSignup",
           "triggerProvider": "Cognito"
         }
       ],
@@ -59,7 +59,7 @@
             "IdentityPoolId"
           ],
           "category": "auth",
-          "resourceName": "sapmetrics23177e1203177e120"
+          "resourceName": "sapmetrics238e1468a38e1468a"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -67,7 +67,7 @@
     }
   },
   "function": {
-    "sapmetrics23177e1203177e120PreSignup": {
+    "sapmetrics238e1468a38e1468aPreSignup": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -80,27 +80,27 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_sapmetrics23177e1203177e120PreSignup_DOMAINALLOWLIST": {
+    "AMPLIFY_function_sapmetrics238e1468a38e1468aPreSignup_DOMAINALLOWLIST": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "sapmetrics23177e1203177e120PreSignup"
+          "resourceName": "sapmetrics238e1468a38e1468aPreSignup"
         }
       ]
     },
-    "AMPLIFY_function_sapmetrics23177e1203177e120PreSignup_deploymentBucketName": {
+    "AMPLIFY_function_sapmetrics238e1468a38e1468aPreSignup_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "sapmetrics23177e1203177e120PreSignup"
+          "resourceName": "sapmetrics238e1468a38e1468aPreSignup"
         }
       ]
     },
-    "AMPLIFY_function_sapmetrics23177e1203177e120PreSignup_s3Key": {
+    "AMPLIFY_function_sapmetrics238e1468a38e1468aPreSignup_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "sapmetrics23177e1203177e120PreSignup"
+          "resourceName": "sapmetrics238e1468a38e1468aPreSignup"
         }
       ]
     }

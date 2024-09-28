@@ -3,14 +3,14 @@
   "modules": [
     "email-filter-allowlist"
   ],
-  "parentResource": "sapmetrics23177e1203177e120",
-  "functionName": "sapmetrics23177e1203177e120PreSignup",
-  "resourceName": "sapmetrics23177e1203177e120PreSignup",
+  "parentResource": "sapmetrics238e1468a38e1468a",
+  "functionName": "sapmetrics238e1468a38e1468aPreSignup",
+  "resourceName": "sapmetrics238e1468a38e1468aPreSignup",
   "parentStack": "auth",
   "triggerEnvs": "[]",
   "triggerDir": "C:\\snapshot\\amplify-cli\\build\\node_modules\\@aws-amplify\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PreSignup",
   "triggerTemplate": "PreSignup.json.ejs",
   "triggerEventPath": "PreSignup.event.json",
-  "roleName": "sapmetrics23177e1203177e120PreSignup",
+  "roleName": "sapmetrics238e1468a38e1468aPreSignup",
   "skipEdit": true
 }
