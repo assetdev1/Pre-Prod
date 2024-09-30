@@ -1,13 +1,60 @@
-/* Upper Left */
 .upper_Left {
-    background-color: var(--whiteShade);
-    border-radius: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 20px;
+  background-color: var(--whiteShade);
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Dropdown filter */
+.dropdown-filter {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 16px; /* Spacing below the dropdown */
+}
+
+.dropdown-filter label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.dropdown-filter select {
+  padding: 8px;
+  border: 1px solid var(--inputBorderColor);
+  border-radius: 5px;
+}
+
+/* For max-width: 1200px */
+@media screen and (max-width: 1200px) {
+  .upper_Left {
+    width: unset;
   }
 
+  .dropdown-filter {
+    justify-content: center; /* Center on smaller screens */
+  }
+}
+
+/* For max-width: 768px */
 @media screen and (max-width: 768px) {
   .upper_Left {
-    padding: 15px;
+    padding: 10px;
+  }
+
+  .dropdown-filter {
+    flex-direction: column; /* Stack label and select on small screens */
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .dropdown-filter label {
+    margin-bottom: 8px;
+  }
+
+  .dropdown-filter select {
+    width: 100%;
   }
 }

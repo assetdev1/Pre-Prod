@@ -1,13 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './UpperLeftdiv.css';
-// import { cardsData } from '../../Data/Data';
 
 import { generateClient } from 'aws-amplify/api';
 import { Amplify } from 'aws-amplify';
 import awsExports from '../../aws-exports';
-import Cards from '../Cards/Cards';
-import CardResponse from '../CardResponse/CardResponse';
-
 
 Amplify.configure(awsExports);
 const client = generateClient();
@@ -41,29 +37,9 @@ const UpperLeftdiv = ({ startDate, endDate, setTriggerFunction }) => {
     console.log("UpperRight received variable: ", startDate, endDate);
   }, [startDate, endDate, setTriggerFunction]);
 
-  const [selectedOption, setSelectedOption] = useState('');
-
-  const handleDropdownChange = (event) => {
-    setSelectedOption(event.target.value);
-    console.log('Selected:', event.target.value);
-  };
-
   return (
     <div className="upper_Left">
-
-      {/* Dropdown filter at the top */}
-      <div className="dropdown-filter">
-        <label htmlFor="filter">Select Filter:</label>
-        <select id="filter" value={selectedOption} onChange={handleDropdownChange}>
-          <option value="">Select an option</option>
-          <option value="option1">rcpg1s4happ1</option>
-          <option value="option2">rcpg1s4happ2</option>
-        </select>
-      </div>
-
-      <Cards />
-      <CardResponse />
-      
+        {/* Space for future content */}
     </div>
   )
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import './LowerLeftdiv.css';
 
-const LowerLeftdiv = () => {
+const LowerLeftdiv = ({ startDate, endDate, setTriggerFunction }) => {
   return (
     <div className="lower_Left">
         {/* Space for future content */}

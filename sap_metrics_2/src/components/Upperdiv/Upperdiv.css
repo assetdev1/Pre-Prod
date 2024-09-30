@@ -9,6 +9,7 @@
     .upper {
         grid-template-columns: 1fr; /* Stack upper_Left and upper_Right */
         /* overflow-y: auto; /* Allow scrolling within upper */
+        overflow-y: scroll;
       }
 }
 
@@ -16,5 +17,6 @@
     .upper {
         grid-template-columns: 1fr; /* Stack the divisions */
         /* overflow-y: auto; /*Allow scrolling for upper */
+        overflow-y: scroll;
       }
 }

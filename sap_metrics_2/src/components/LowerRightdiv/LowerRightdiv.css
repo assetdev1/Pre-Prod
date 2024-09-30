@@ -5,9 +5,49 @@
   padding: 20px;
 }
 
+/* Dropdown filter */
+.dropdown-filter {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 16px; /* Spacing below the dropdown */
+}
+
+.dropdown-filter label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.dropdown-filter select {
+  padding: 8px;
+  border: 1px solid var(--inputBorderColor);
+  border-radius: 5px;
+}
+
+/* For max-width: 1200px */
+@media screen and (max-width: 1200px) {
+  .dropdown-filter {
+    justify-content: center; /* Center on smaller screens */
+  }
+}
+
 @media screen and (max-width: 768px) {
     .lower_Right {
         padding: 15px;
       }
+
+    .dropdown-filter {
+      flex-direction: column; /* Stack label and select on small screens */
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    
+    .dropdown-filter label {
+      margin-bottom: 8px;
+    }
+    
+    .dropdown-filter select {
+      width: 100%;
+    }
 }
 

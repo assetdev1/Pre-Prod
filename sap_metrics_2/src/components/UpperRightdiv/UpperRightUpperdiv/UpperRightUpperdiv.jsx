@@ -1,7 +1,7 @@
 import React from 'react';
 import './UpperRightUpperdiv.css';
 
-const UpperRightUpperdiv = ({ startDate, endDate }) => {
+const UpperRightUpperdiv = ({ startDate, endDate, setTriggerFunction }) => {
   return (
     <div className="upper_Right_upper">
         {/* Space for future content */}

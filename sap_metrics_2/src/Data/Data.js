@@ -80,8 +80,7 @@ export const cardsData = [
   {
     title: "System Users",
     color: {
-      backGround:
-        "linear-gradient(rgb(248, 212, 154) -146.42%, rgb(255 202 113) -46.42%)",
+      backGround: "linear-gradient(rgb(248, 212, 154) -146.42%, rgb(255 202 113) -46.42%)",
       boxShadow: "0px 10px 20px 0px #F9D59B",
     },
     barValue: 60,
@@ -91,6 +90,22 @@ export const cardsData = [
       {
         name: "System Users",
         data: [10, 25, 15, 30, 12, 15, 20],
+      },
+    ],
+  },
+  {
+    title: "Service Users",
+    color: {
+      backGround: "linear-gradient(rgb(200, 220, 120) -146.42%, rgb(211 203 255) -46.42%)",
+      boxShadow: "0px 10px 20px 0px #FDC0C7",
+    },
+    barValue: 35,
+    value: "14,270",
+    png: UilClipboardAlt,
+    series: [
+      {
+        name: "Service Users",
+        data: [10, 100, 50, 70, 80, 30, 40],
       },
     ],
   },

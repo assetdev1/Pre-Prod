@@ -1,0 +1,13 @@
+/* Upper Left */
+.upper_Left {
+    background-color: var(--whiteShade);
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+  }
+
+@media screen and (max-width: 768px) {
+  .upper_Left {
+    padding: 15px;
+  }
+}

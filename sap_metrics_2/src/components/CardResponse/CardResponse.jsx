@@ -1,14 +1,15 @@
 import React from 'react';
-import './Cards.css';
+import './CardResponse.css';
 // import { cardsData } from '../../Data/Data';
-import Card from '../Card/Card';
+import CardResponseBox from '../CardResponseBox/CardResponseBox';
 import { UilClipboardAlt } from "@iconscout/react-unicons";
 
-const Cards = () => {
+
+const CardResponse = () => {
 
   const cardsData = [
     {
-      title: "Dialog WP Utilization",
+      title: "Dialog WP Response Time",
       color: {
         backGround: "linear-gradient(180deg, #bb67ff 0%, #c484f3 100%)",
         boxShadow: "0px 10px 20px 0px #e0c6f5",
@@ -24,7 +25,7 @@ const Cards = () => {
       ],
     },
     {
-      title: "Update WP Utilization",
+      title: "Update WP Response Time",
       color: {
         backGround: "linear-gradient(180deg, #FF919D 0%, #FC929D 100%)",
         boxShadow: "0px 10px 20px 0px #FDC0C7",
@@ -40,7 +41,7 @@ const Cards = () => {
       ],
     },
     {
-      title: "Batch WP Utilization",
+      title: "Batch WP Response Time",
       color: {
         backGround: "linear-gradient(rgb(248, 212, 154) -146.42%, rgb(255 202 113) -46.42%)",
         boxShadow: "0px 10px 20px 0px #F9D59B",
@@ -56,7 +57,7 @@ const Cards = () => {
       ],
     },
     {
-      title: "Spool WP Utilization",
+      title: "Spool WP Response Time",
       color: {
         backGround: "linear-gradient(rgb(200, 220, 120) -146.42%, rgb(211 203 255) -46.42%)",
         boxShadow: "0px 10px 20px 0px #FDC0C7",
@@ -79,7 +80,7 @@ const Cards = () => {
       {cardsData.map((card)=> {
         return(
             <div className="parentContainer">
-                <Card title={card.title} color={card.color} barValue={card.barValue} value={card.value} png={card.png} series={card.series} />
+                <CardResponseBox title={card.title} color={card.color} barValue={card.barValue} value={card.value} png={card.png} series={card.series} />
             </div>
         )
       })}
@@ -87,4 +88,4 @@ const Cards = () => {
   )
 }
 
-export default Cards
+export default CardResponse

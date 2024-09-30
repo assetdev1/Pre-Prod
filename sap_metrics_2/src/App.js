@@ -271,7 +271,7 @@ function App() {
   const handleEndDateChange = (e) => setEndDate(e.target.value);
 
   // This will hold the function passed down from UpperRight.jsx
-  const [triggerFunctionInUpperRight, setTriggerFunctionInUpperRight] = useState(null);
+  const [triggerFunction, setTriggerFunction] = useState(null);
 
   // Apply button functionality
   const handleApply = () => {
@@ -280,8 +280,8 @@ function App() {
       return;
     }
     console.log('Applied:', { startDate, endDate });
-    if (triggerFunctionInUpperRight) {
-      triggerFunctionInUpperRight(); // Call the function passed from UpperRight.jsx
+    if (triggerFunction) {
+      triggerFunction(); // Call the function passed from UpperRight.jsx
     }
   };
 
@@ -402,10 +402,10 @@ function App() {
               </nav>
 
               {/* Upper section */}
-              <Upperdiv startDate={startDate} endDate={endDate} setTriggerFunctionInUpperRight={setTriggerFunctionInUpperRight} />
+              <Upperdiv startDate={startDate} endDate={endDate} setTriggerFunction={setTriggerFunction} />
 
               {/* Lower section */}
-              <Lowerdiv startDate={startDate} endDate={endDate} />
+              <Lowerdiv startDate={startDate} endDate={endDate} setTriggerFunction={setTriggerFunction} />
 
             </div>
 
