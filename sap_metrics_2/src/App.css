@@ -60,7 +60,8 @@
   width: 97vw;
   background: var(--glass);
   border-radius: 2rem;
-  overflow: hidden;
+  /* overflow: hidden; */
+  overflow-y: scroll;
   padding: 20px;
   box-sizing: border-box; /* Ensure padding is part of width */
 }

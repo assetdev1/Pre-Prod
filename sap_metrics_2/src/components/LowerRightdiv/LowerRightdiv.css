@@ -5,12 +5,17 @@
   padding: 20px;
 }
 
+.title_Lower {
+  padding: 0%;
+  margin: 0;
+}
+
 /* Dropdown filter */
 .dropdown-filter {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 16px; /* Spacing below the dropdown */
+  margin-bottom: 0px; /* Spacing below the dropdown */
 }
 
 .dropdown-filter label {

@@ -1,0 +1,23 @@
+.CardsLRU {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.parentContainerLRU{
+    width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+    .CardsLRU{
+        flex-direction: column;
+    }
+    .parentContainerLRU{
+        height: 8.6rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .CardsLRU{
+        width: 100%;
+    }
+}

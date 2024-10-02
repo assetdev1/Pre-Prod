@@ -51,9 +51,11 @@ const UpperLeftdiv = ({ startDate, endDate, setTriggerFunction }) => {
   return (
     <div className="upper_Left">
 
+      <h4 className='title_Upper'>SAP Application Work Process Overview</h4>
+
       {/* Dropdown filter at the top */}
       <div className="dropdown-filter">
-        <label htmlFor="filter">Select Filter:</label>
+        <label htmlFor="filter">Select Host:</label>
         <select id="filter" value={selectedOption} onChange={handleDropdownChange}>
           <option value="">Select an option</option>
           <option value="option1">rcpg1s4happ1</option>
@@ -61,7 +63,9 @@ const UpperLeftdiv = ({ startDate, endDate, setTriggerFunction }) => {
         </select>
       </div>
 
+      <h4 className='title'>Work process Utilization</h4>
       <Cards />
+      <h4 className='title'>Work process Response Time</h4>
       <CardResponse />
       
     </div>

@@ -1,0 +1,22 @@
+.CardsLML {
+    display: flex;
+    gap: 10px;
+}
+.parentContainerLML {
+    width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+    .CardsLML{
+        flex-direction: column;
+    }
+    .parentContainerLML{
+        height: 9rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .CardsLML{
+        width: 100%;
+    }
+}

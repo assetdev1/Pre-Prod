@@ -5,7 +5,8 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  /* gap: 16px; */
+  gap: 2px;
 }
 
 /* Dropdown filter */
@@ -13,7 +14,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 16px; /* Spacing below the dropdown */
+  margin-bottom: 0px; /* Spacing below the dropdown */
 }
 
 .dropdown-filter label {
@@ -25,6 +26,16 @@
   padding: 8px;
   border: 1px solid var(--inputBorderColor);
   border-radius: 5px;
+}
+
+.title {
+  padding: 0%;
+  margin-bottom: 0;
+}
+
+.title_Upper {
+  padding: 0%;
+  margin: 0;
 }
 
 /* For max-width: 1200px */

@@ -51,13 +51,13 @@ const UpperRightLowerdiv = ({ startDate, endDate, setTriggerFunction }) => {
           }
         ]
       },
-    ];
+  ];
 
   return (
     <div className="upper_Right_lower">
       {available
       ? cardsDataIfAvailable.map((card) => (
-          <div className="parentContainer" key={card.title}>
+          <div className="parentContainerURL" key={card.title}>
             <UpperRightLowerBox
               title={card.title}
               color={card.color}
@@ -69,7 +69,7 @@ const UpperRightLowerdiv = ({ startDate, endDate, setTriggerFunction }) => {
           </div>
         ))
       : cardsDataIfUnavailable.map((card) => (
-          <div className="parentContainer" key={card.title}>
+          <div className="parentContainerURL" key={card.title}>
             <UpperRightLowerBox
               title={card.title}
               color={card.color}

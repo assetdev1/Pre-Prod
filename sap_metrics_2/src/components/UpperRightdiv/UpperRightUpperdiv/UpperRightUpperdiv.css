@@ -5,6 +5,16 @@
     padding: 20px;
   }
 
+  .parentContainerURU{
+    width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+  .parentContainerURU{
+    height: 9rem;
+  }
+}
+
 @media screen and (max-width: 768px) {
     .upper_Right_upper {
       padding: 15px;

@@ -1,0 +1,23 @@
+.CardsLMU {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.parentContainerLMU{
+    width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+    .CardsLMU{
+        flex-direction: column;
+    }
+    .parentContainerLMU{
+        height: 9rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .CardsLMU{
+        width: 100%;
+    }
+}

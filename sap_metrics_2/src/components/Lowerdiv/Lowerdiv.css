@@ -8,13 +8,13 @@
 @media screen and (max-width: 1200px) {
     .lower {
         /* grid-template-columns: 1fr 1fr; 2 columns */
-        overflow-y: auto; /* Allow scrolling within lower */
+        /* overflow-y: auto; /* Allow scrolling within lower */
     }
 }
 
 @media screen and (max-width: 768px) {
     .lower {
         grid-template-columns: 1fr; /* Stack lower_Left, lower_Middle, and lower_Right */
-        overflow-y: auto; /* Scroll if lower content exceeds */
+        /* overflow-y: auto; /* Scroll if lower content exceeds */
       }
     }

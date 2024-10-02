@@ -1,0 +1,22 @@
+.CardsLLL {
+    display: flex;
+    gap: 10px;
+}
+.parentContainerLLL {
+    width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+    .CardsLLL{
+        flex-direction: column;
+    }
+    .parentContainerLLL{
+        height: 9rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .CardsLLL{
+        width: 100%;
+    }
+}
